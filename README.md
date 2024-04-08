@@ -65,7 +65,9 @@ const mesh = new THREE.Mesh(geometry, material);  -- combination of geometry and
 - bug arha tha could not load island scene kionke hmne assets wala ko islandScene folder se import kra hai wo nhi dia wa hai.
 - Ab chalgya hai hmare pass yh lekin adjust nhi hoa wa hai yh island hmare pass kionke screen pixels ki waja se hmare pass yh show nhi horha hai 
 - Hmare pass screen adjust nhi thi to 3D model ajeeb sa show krrha tha hmein to usko properly dekhne ke liye hmne position,scale,rotation ke parameters ko apne hisab se adjust kra hai aur ab wo sahi chal rha hai hmare pass.
-- yhn tk hmare pass model create hochuka hai aur ab hmne usko screen pe adjsut bhi krlia hai jo values di hain usse
+- yhn tk hmare pass model create hochuka hai aur ab hmne usko screen pe adjsut bhi krlia hai jo values di hain usse.
+- hmara island jo hai wo hmare pass hai group mein aur usmein bht sare meshes hain hmare pass jbke hmara sky jo hai wo primitive element hai usmein bs aik mesh hai aur wo hm use kreinge bs all the way.
+- Primitive tag ke andar hm object ke parameter mein call krleinge apne pass sky.scene aur sky mein hm apne pass call krleinge useGltf se 3d Model
 
 ## Lighting in 3D:
 
@@ -74,9 +76,33 @@ const mesh = new THREE.Mesh(geometry, material);  -- combination of geometry and
 - Directional lightening -- yh aisi hai jese light arhi ho sun se direct hmare pass.
 - <directionalLight position={[1, 1, 1]} intensity={0} /> -- light ki intensity se hm kheleinge aur apne hisab se light ko hm modify krleinge apne pass all the way.
 - position ko bhi modify krke hm lighteing kko change krskte hain aur khelskte hain hm according to our requirement all the way.
-- Ambient Light -- yh hmare
+- Ambient Light -- yh sare objects pe equally light marti hai withput casting shadows 
+- directional light ke sath hm kheleinge to scene sahi trhn se dekhega hmein all the way.
+- point light aur spot light ki hmein zrorat nhi hai yh hm use nhi kreinge.
+- Hemisphere light deti hai aik skyColor aur aik groundColor -- jisse bht ziada chezein wazeh hojati hain.
 
+## Contact page with the Fox animation:
 
+- form ka structure bnalia hai hmne aur styling krli hai.
+- phr labels aur input fields bnali hain hmne form ki.
+- onChange ke liye State bnali hai aur function bnaya hai joke update krega state ko.
+- OnSubmit ka function bhi bnaya hai jo ke jb form submit hoga to wo form ke onSubmit pe call krleinge hm.
+- uske ilawa hmne animation run krni hai jb input mein koi likhna shuru kre aur animation slow krni hai jb koi input mein kuch mitae aur jb submit krein hm to animation bhaage -- isko krne ke liye hmein onFocus aur onBlur ke functions ko run krna hoga aur track krna hoga hmein take hm get krlein aur apni state ko update krlein phr hm inke uper apni animation ko move krleinge.
+
+## EmailJS ka package use krrhe hain hm yhn pe apne pass  --  npm install @emailjs/browser
+
+- By using this package hm email send krdeinge jb bhi koi hmare pass aega.
+- serviceID,templateId,form_data & public key as a parameter send krdeinge hm.
+- hmare pass email arhi hai 
+
+## Fox Animation with Logic in the form:
+
+- model mein fox.jsx bnaleinge aik component hm.
+- phr hm .dbl ki file ko jsx mein change krienge ismein.
+- yh primitive object nhi hoga blke yh fox hmara 3d model hoga jisse hm interact kreinge.
+- hmne .glb se jsx bnali hai web pe jake drag krke phr jsx mein aake modify krdia hai hmne component ko apne hisab se aur phr hm props send krrhe hain.
+- Contact page mein hmne call krlia hai fox ko inside the canvas.
+- rotation ke coordinates apne hisab se move krleinge hm 
 
 
 ##### Extra Learning:
@@ -90,4 +116,19 @@ const mesh = new THREE.Mesh(geometry, material);  -- combination of geometry and
 - react error derhe thi -- quick fix mein jake - no unknown property for react file ko select krlia hai to errors remove hogae hain.
 - Internal server error: Failed to parse source for import analysis because the content contains invalid JS syntax. You may need to install appropriate plugins to handle the .glb file format, or if it's an asset, add "**/*.glb" to `assetsInclude` in your configuration -- yh bug arha hai to isko hmne htane ke liye vite.config.js mein jake hm  --   assetsInclude:['**/*.glb'] --  vite.config.js mein jake hm yh apne assets ka btadeinge
 - eslint is constatly complaining us regarding the errors so we will go to eslint.rc to -   ignorePatterns: ['dist', '.eslintrc.cjs','src'],
+- agr scrooling horhi hogi to hm global styles mein jake margin-0 krdeinge to phr scrolling nhi hogi
+- threejs mein hm loader ki madad se images ko call krleinge apne pass aur phr hm unko har face of cube pe att=pply bhi krskte hain attcah property ke sath.
+- orbit controls se hm cube ko zoom krkste hain aur pori trhn se zoom in aur zoom out krskte hain aur phr hm usko move bhi krskte hain x,y,x axis mein cube ko pori trhn se.
+- import {OrbitControls} from "@react-three/drei";    --   <OrbitControl/> isko hm call krleinge bs canvas mein to phr cube zoom in aur zoom out hoga aur bs.
+- enablePen = false  -- isse hmara cube move nhi krega kahin bhi jhn hm isko move krna chahte hnge bs aik jagah pe still rhega yh.
+- enableZoom = false -- isse zoom nhi krega yh cube bs 
+- framer-motion ko use krte we hm rotation apply krskte hain aramse mouse ki movement pe cube pe.
+- scroll gesture se bhi hm movement ko apply krskte hain 3d objects pe.
+- react-three drei mein bht sare packaages available hain 3threejs ke joke bht use ke hain lekin github se jake sekhke implement krna prega unhe.
+- args -- ka argument hota hai hmare pas jismein hmare pass array hota hai aur usmein hm values dedeinge.
+- react-three/fiber -- yh threejs ko jsx mein render ki library hai.
+- react-three/drei -- yh library hmare pass additional features ki hai joke github pe community ne bnadie hain jinko hm use krskte hain.
+- react-three/spring -- yh library hmare pass animation ki hai jisko hm use krte hain aur iske through hm 3d objects ko animate krskte hain.
+- canvas ke andar mesh hota hai aur uske andar hmare pass geometry hogi aur hmare pass material hoga  -- inke parameters bhi hote hain hmare pass joke hm use krskte hain according to our requirement.
+- Sky component rafce se bnaya tha aur usko call krlia tha hmne canvas mein home mein to pori application break hogae thi kionke div hai sky ke rafce mein canvas khali mesh ya group ko render krwata hai bs.
 - 

@@ -10,7 +10,8 @@
 import { Canvas } from "@react-three/fiber";
 import { Suspense } from "react";
 import Loader from "../components/Loader";
-import Island from "../models/island";
+import Island from "../models/Island";
+import Sky from "../models/Sky";
 
 const Home = () => {
   // screen adjustment ke liye hmare pass hmein aik function bnana prega
@@ -46,11 +47,11 @@ const Home = () => {
         <Suspense fallback={<Loader />}>
           {/* Lighting plays an important role in 3D elements with their attributes*/}
           <directionalLight position={[1, 1, 1]} intensity={2} />
-          <ambientLight />
-          <pointLight />
-          <spotLight />
-          <hemisphereLight />
+          <ambientLight intensity={0.5}/>
+          <hemisphereLight skyColor="b1e1ff" groundColor="#000000" intensity={1}/>
           {/* 3D Model island */}
+          {/* Sky 3D model hm call krrhe hain */}
+          <Sky/>
           {/* Island ki position ke liye position aur scale ke attributes hm pass kreinge jo function mein se ae hain hmare pass */}
           <Island
             scale={islandScale}
