@@ -3,6 +3,9 @@ import emailjs from "@emailjs/browser";
 import { Canvas } from "@react-three/fiber";
 import Fox from "../models/Fox";
 import Loader from "../components/Loader";
+import useAlert from "../hooks/useAlert";
+import { a } from "@react-spring/three";
+import Alert from "../components/Alert";
 
 const Contact = () => {
   // form ka ref bna rhe hain
@@ -18,7 +21,11 @@ const Contact = () => {
   // isLoading state hm add kreinge joke hm use kreinge to disable tha button
   const [isLoading, setIsLoading] = useState(false);
 
+  // importing Custom Hook for Alert
+  const { alert, showAlert, hideAlert } = useAlert();
+
   // Animation state bnarhe hain joke hm send kreinge as a props Fox mein
+  // Fox ki differnet animation states hain ismein hm use kreinge different states of animation
   const [currentAnimation, setCurrentAnimation] = useState("idle");
 
   // Handle Change function mein hm jo input values change hngi unko set kreinge
@@ -31,6 +38,8 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
+
+    // Jb submit hojae form to hm bhaga rhe hain fox ko to uski animation ka naam hit hai
     setCurrentAnimation("hit");
 
     // Emailjs ko use krke hm apna msg bhejdeinge apni email pe
@@ -50,17 +59,37 @@ const Contact = () => {
       .then(() => {
         setIsLoading(false);
 
+        // Jb msg chala jaega to hm Success msg show krdeinge
         // TODO: SHOW SUCCESS MESSAGE
-        // TODO: HIDE AN ALERT
+        showAlert({
+          show: true,
+          text: "Message Sent Succesfully!",
+          type: "Success",
+        });
 
-        // clear krleinge hm form ko to the default values state ko
-        setForm({ name: "", email: "", message: "" });
+        // Timeout pe fox ki animation ko hm stop krrhe hain apne pass
+        setTimeout(() => {
+          // Timeout pe animation bhi hatjae aur alert bhi hatjae hmare pass se
+          // TODO: HIDE AN ALERT
+          // Is function mein hmein false dena zrori hai
+          hideAlert(false);
+          // timeout hai 3000ms aur ispe current Animation ko idle krdo
+          setCurrentAnimation("idle");
+          // clear krleinge hm form ko to the default values state ko
+          setForm({ name: "", email: "", message: "" });
+        }, [3000]);
       })
       .catch((error) => {
         setIsLoading(false);
         setCurrentAnimation("idle");
         console.log(error);
         // TODO: SHOW ERROR MESSAGE
+        // Is mein bhi show hogi alert with engative response
+        showAlert({
+          show: true,
+          text: "I didn't receive your message!",
+          type: "danger",
+        });
       });
   };
 
@@ -68,11 +97,18 @@ const Contact = () => {
   // hmein track krna prega ke kia kuch likha hai aur kia kuch mitgya hai
   // yh hm kreinge focus aur blur ke builtin functions se jo javascript deti hai hmein isse hm track krleinge
   // onFocus & onBlur ke functions ko hm use kreinge apne pass take track krein aur us hisab se hm state manage krke animation ko move krdeinge.
+
+  // jb hm focus krrhe hain to hm apni currentAnimation ko -- walk krrhe hain
   const handleFocus = () => setCurrentAnimation("walk");
+
+  // Aur jb hm focus htarhe hain to hm apni currentAnimation ko -- idle krrhe hain
   const handleBlur = () => setCurrentAnimation("idle");
 
   return (
     <section className='relative flex lg:flex-row flex-col max-container'>
+      {/* Agr Alert.show true hai to Alert show krde */}
+      {alert.show && <Alert {...alert} />}
+
       <div className='flex-1 min-w-[50%] flex flex-col'>
         <h1 className='head-text'>Get In touch</h1>
         <form
@@ -146,9 +182,10 @@ const Contact = () => {
           }}
         >
           <directionalLight intensity={2.5} position={[0, 0, 1]} />
-          <ambientLight intensity={1} />
+          <ambientLight intensity={0.5} />
           <Suspense fallback={<Loader />}>
             {/* props send krrhe hain Fox ke andar yhn pe jo ke hm component mein jake destructure krleinge apne pass */}
+            {/* Yh jo Current Animation pass krrhe hain yh hmare pass different animations hai Fox ki joke hm apply krrhe hain */}
             <Fox
               currentAnimation={currentAnimation}
               position={[0.5, 0.35, 0]}

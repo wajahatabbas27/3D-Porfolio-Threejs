@@ -102,7 +102,32 @@ const mesh = new THREE.Mesh(geometry, material);  -- combination of geometry and
 - yh primitive object nhi hoga blke yh fox hmara 3d model hoga jisse hm interact kreinge.
 - hmne .glb se jsx bnali hai web pe jake drag krke phr jsx mein aake modify krdia hai hmne component ko apne hisab se aur phr hm props send krrhe hain.
 - Contact page mein hmne call krlia hai fox ko inside the canvas.
-- rotation ke coordinates apne hisab se move krleinge hm 
+- Rotation ke coordinates apne hisab se move krleinge hm phr fox sahi nazar aegi hmein.
+- Fox hm primitive object ke tag mein use nhi kreinge blke hm isko group mein bnaeinge kionke ismein hm apne hisab se move kreinge.
+- Suspense component hmein Loader ke liye builtin react ka component hai joke hm use krte hain.
+- <Canvas
+          camera={{
+            position: [0, 0, 5],
+            fov: 75,
+            near: 0.1,
+            far: 1000,
+          }}
+> -- yh sb camera ki properties hain joke hm use kreineg apne pass jese ke kia position hai camera ki, uske ilawa fov(feel of view) - aur camera kitna near aur far hai, yh hm as a parameter apne hisab se dekheinge.
+- Kuch nhi kra hai hmne bs hm kreinge yh ke handleFocus pe fox ki currentAnimation ki state ko walk krdeinge aur hm handleBlur mein fox ki animaton ko idle krdeinge wapis joke khara wa hai -- uske bad hm yh currentAnimation ki state ko as a props send krdeinge fox ke component mein.
+- Log krke hm dekhleinge apne pass actions ko -   const { actions } = useAnimations(animations, FoxRef); -- to hmein pta chal jaega ke actions kn knse hain hmare pass.
+- Object.values(actions).forEach((action) => action.stop());  -- useEffect mein hm stop krrhe hain animations aise.
+- actions[currentAnimation].play();  --  aise hm animations run krrhe hain play se aur hm get aise krrhe hain joke array ke andar hai.
+- Jb hm send krrhe hain to fox pe hit animation apply hogae hai aur fox bhaag rhi hai phr.
+- Lekin send pe click krne ke bad yh animation fox ki bhaage jarhi hai to hm is animation pe timeout set krienge aur isko stop kreinge.
+- Timeout ka aik function bnadeinge .then mein submit Form ke aur uske andar hm apne pass timeout krdeinge application ko 3000ms ke bad aur hm uske ilawa form ki states ko sbko empty krdeinge.
+
+## Custom Hook for the Alert!
+
+- Jb hm form submit krrhe hain to hm emailjs ke through send krrhe hain email emailjs.send() ke method se -- usse jo response arha hai send krke usko hm .then aur .catch mein get krrhe hain aur apne pass use krrhe hain.
+- Iske liye hm apna aik custom hook bnarhe hain ALert ka jiske through hm Alert set krdeinge ke kia form submit hogya hai ya nhi.
+- src > hooks > useAlert.js
+- hmne kuch nhi kra hai blke ismein hmne aik useState se state bnai hai alert ki aur default values set krdi hain hmne usmein aur phr hmne 2 functions bnae hain to show alert and hide alert , alert ki state ke object mein hmare pass 3 key value pairs hain, show/text/type  --  iske through hm apni logic bnarhe hain aur hm return krrhe hai alertState, showAlert aur hideAlert ke functions apne pass se.
+
 
 
 ##### Extra Learning:
@@ -131,4 +156,6 @@ const mesh = new THREE.Mesh(geometry, material);  -- combination of geometry and
 - react-three/spring -- yh library hmare pass animation ki hai jisko hm use krte hain aur iske through hm 3d objects ko animate krskte hain.
 - canvas ke andar mesh hota hai aur uske andar hmare pass geometry hogi aur hmare pass material hoga  -- inke parameters bhi hote hain hmare pass joke hm use krskte hain according to our requirement.
 - Sky component rafce se bnaya tha aur usko call krlia tha hmne canvas mein home mein to pori application break hogae thi kionke div hai sky ke rafce mein canvas khali mesh ya group ko render krwata hai bs.
-- 
+- <Alert {...alert} />  -- yh alert component hai aur ismein hm spread operator se props pass krrhe hain joke hmare pass arhe hain 
+- When a screen reader encounters an element with role="alert", it will announce the content of that element with greater urgency, ensuring that users are promptly made aware of important messages or alerts. This helps users who may have difficulty perceiving visual cues to be aware of critical information presented on the web page.
+- role="alert"  -- isse extra importance dega screen reader ko
